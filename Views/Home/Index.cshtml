@@ -1,0 +1,96 @@
+﻿
+@model Student
+
+    <div class="row mt-2">
+        <div class="col-6">
+            <label>Student Id</label>
+            <input class="form-control" id="StudentId" type="number" autocomplete="off" />
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-6">
+            <label>Student Name</label>
+            <input class="form-control" id="StudentName" autocomplete="off" />
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-6">
+            <label>Student Gender</label>
+            <input type="radio" name="Gender" id="GenderMale" value="Male" checked>
+            <label for="GenderMale">Male</label>
+
+            <input type="radio" name="Gender" id="GenderFemale" value="Female">
+            <label for="GenderFemale">Female</label>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-6">
+            <label>Student Standard</label>
+            <select class="form-control" id="StudentStd">
+                <option value="">Select Standard</option>
+                <option value="1">1st</option>
+                <option value="2">2nd</option>
+                <option value="3">3rd</option>
+                <option value="4">4th</option>
+                <option value="5">5th</option>
+                <option value="6">6th</option>
+                <option value="7">7th</option>
+                <option value="8">8th</option>
+                <option value="9">9th</option>
+                <option value="10">10th</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-6">
+            <label>Student City</label>
+            <input class="form-control" id="StudentCity" autocomplete="off" />
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-6">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="IsRegular">
+                <label class="form-check-label" for="IsRegular">
+                    Is Student Is Regular
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-6">
+            <button class="btn btn-primary" type="button" onclick="SaveStudent()"> Save </button>
+        </div>
+    </div>
+
+
+    <script>
+
+
+        function SaveStudent() {
+            //get all selected radio button. In our case we gave same name to radio button 
+            //so only one radio button will be selected either Male or Female
+            var selected = $("input[type='radio'][name='Gender']:checked");
+            let formData = {
+                studentId: $("#StudentId").val(),
+                studentName: $("#StudentName").val(),
+                standard: $("#StudentStd").val(),
+                city: $("#StudentCity").val(),
+                isRegular: $("#IsRegular").is(":checked"),
+                gender: selected.length > 0 ? selected.val() : 0,
+            }
+            console.log(formData)
+            $.ajax({
+                url: "/Home/SaveStudentWithoutSerialize",
+                type:"POST",
+                data: formData,
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                }
+
+            });
+        }
+    </script>
